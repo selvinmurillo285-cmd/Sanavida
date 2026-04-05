@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user information and their current plan.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "goal": { "type": "string" },
+        "currentPlan": { "type": "string", "enum": ["free", "basic", "premium"] },
+        "favorites": { "type": "array", "items": { "type": "string" } },
+        "purchasedBooks": { "type": "array", "items": { "type": "string" } },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["uid", "email", "currentPlan"]
+    },
+    "Recipe": {
+      "title": "Recipe",
+      "description": "A healthy recipe.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string", "enum": ["breakfast", "lunch", "dinner"] },
+        "image": { "type": "string", "format": "uri" },
+        "ingredients": { "type": "array", "items": { "type": "string" } },
+        "preparation": { "type": "array", "items": { "type": "string" } },
+        "nutritionalInfo": {
+          "type": "object",
+          "properties": {
+            "calories": { "type": "number" },
+            "sugar": { "type": "string" },
+            "protein": { "type": "string" },
+            "carbs": { "type": "string" }
+          }
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "isPremium": { "type": "boolean" },
+        "isVegetarian": { "type": "boolean" },
+        "tips": { "type": "string" }
+      },
+      "required": ["title", "category", "image"]
+    },
+    "Book": {
+      "title": "Digital Book",
+      "description": "A digital book or guide.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "image": { "type": "string", "format": "uri" },
+        "isPremium": { "type": "boolean" }
+      },
+      "required": ["title", "price", "image"]
+    },
+    "Plan": {
+      "title": "Subscription Plan",
+      "description": "Details of a subscription plan.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "recipeLimit": { "type": "string" }
+      },
+      "required": ["name", "price"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "User profiles and settings."
+    },
+    "/recipes/{recipeId}": {
+      "schema": "Recipe",
+      "description": "Collection of all recipes."
+    },
+    "/books/{bookId}": {
+      "schema": "Book",
+      "description": "Collection of all digital books."
+    },
+    "/plans/{planId}": {
+      "schema": "Plan",
+      "description": "Subscription plan definitions."
+    }
+  }
+}
